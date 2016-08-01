@@ -33,7 +33,6 @@ var partials = {
         Array.prototype.slice.call(document.getElementsByTagName('partial'))
             .forEach(function(obj, i) {
                 partials.workingObj = obj;
-
                 partials.clear();
                 partials.fetch();
             });
