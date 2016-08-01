@@ -22,7 +22,11 @@ var partials = {
         Array.prototype.slice.call(data.getElementsByTagName('script'))
             .forEach(function(obj) {
                 var partialjs = document.createElement('script');
-                partialjs.innerHTML = obj.innerHTML;
+                if (typeof obj.attributes.src === 'undefined') {
+                    partialjs.innerHTML = obj.innerHTML;
+                } else {
+                    partialjs.src = obj.attributes.src.value;
+                }
                 document.head.appendChild(partialjs);
             });
     },
