@@ -1,23 +1,30 @@
 var partials = {
-    clear: function() {
-        partials.workingObj.innerHTML = '';
+    clear: function(obj) {
+        obj.innerHTML = '';
     },
 
-    fetch: function() {
+    fetch: function(obj) {
         var request = new XMLHttpRequest();
-        request.addEventListener("load", partials.render);
-        request.open("GET", partials.workingObj.attributes.path.nodeValue);
+
+        function requestComplete(e, objRef) {
+            partials.render(e.target.responseText, objRef);
+        }
+
+        request.addEventListener("load", function(e) {
+            requestComplete(e, obj);
+        }, false);
+
+        request.open("GET", obj.attributes.path.nodeValue);
         request.send();
     },
 
-
-    render: function() {
-        partials.workingObj.innerHTML = this.responseText;
-        partials.evaluate(this.responseText);
+    render: function(data, objRef) {
+        objRef.innerHTML = data;
+        partials.evaluate(data);
     },
 
-    evaluate: function(response) {
-        var data = new DOMParser().parseFromString(response, "text/html");
+    evaluate: function(partialData) {
+        var data = new DOMParser().parseFromString(partialData, "text/html");
 
         Array.prototype.slice.call(data.getElementsByTagName('script'))
             .forEach(function(obj) {
@@ -31,14 +38,11 @@ var partials = {
             });
     },
 
-    workingObj: null,
-
     start: function() {
         Array.prototype.slice.call(document.getElementsByTagName('partial'))
             .forEach(function(obj, i) {
-                partials.workingObj = obj;
-                partials.clear();
-                partials.fetch();
+                partials.clear(obj);
+                partials.fetch(obj);
             });
     }
 };
