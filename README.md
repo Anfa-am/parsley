@@ -1,22 +1,21 @@
 # Parsley
-Make HTML great again - client side logicless partials - 
+Require external html files with <partial> </partial>
 4 KB minified 
 
 # usage
-   use a the partial tag to denote any partials you'd like to load in and then run parsely. It'll take care of the rest.
 
-# example
     <!DOCTYPE html>
     <html>
         <head>
             <meta charset="utf-8">
         </head>
         <body>
-            <partial path="nav.html"></partial>
+            <partial path="/views/nav.html"></partial>
         </body>
         
         <script type="text/javascript" src="parsley.js"></script>
         <script type="text/javascript">
+            // rendering the partial
             parsley();
         </script>
     </html>
